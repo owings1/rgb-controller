@@ -4,7 +4,12 @@ import pwmio
 from adafruit_debouncer import Button
 from digitalio import DigitalInOut, Direction, Pull
 
-from settings import *
+from defaults import *
+try:
+  from settings import *
+except ImportError as e:
+  print(f'Error loading settings: {type(e).__name__}: {e}')
+
 
 def getpin(name):
   return getattr(board, name)
@@ -25,10 +30,10 @@ print(f'{num_outputs=} {pwm_pins=}')
 pwm = tuple(map(pwmio.PWMOut, map(getpin, pwm_pins)))
 
 buttons = tuple(map(init_button, map(getpin, button_pins)))
-button_less, button_select, button_more = buttons
 if invert_buttons:
   print(f'{invert_buttons=}')
-  button_less, button_more = button_more, button_less
+  buttons = tuple(reversed(buttons))
+button_less, button_select, button_more = buttons
 
 if min_level is None:
   min_level = 1
@@ -43,6 +48,11 @@ else:
   max_level = max(1, max_level)
   max_level = min(len(duty_cycles) - 1, max_level)
 print(f'{max_level=}')
+
+led = DigitalInOut(board.LED_INVERTED)
+led.direction = Direction.OUTPUT
+led.value = not disable_led
+print(f'{disable_led=}')
 
 levels = [min_level] * len(pwm)
 values = [None] * len(pwm)
