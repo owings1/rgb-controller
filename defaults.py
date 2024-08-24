@@ -5,9 +5,6 @@
 # Number of LEDs connected. Max is number of pwm_pins.
 num_outputs = 3
 
-# Disable onboard LED to save power
-disable_led = False
-
 # Invert up/down buttons
 invert_buttons = False
 

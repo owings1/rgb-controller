@@ -35,7 +35,7 @@ if invert_buttons:
   buttons = tuple(reversed(buttons))
 button_less, button_select, button_more = buttons
 
-if min_level is None:
+if min_level is None: 
   min_level = 1
 else:
   min_level = max(1, min_level)
@@ -48,11 +48,6 @@ else:
   max_level = max(1, max_level)
   max_level = min(len(duty_cycles) - 1, max_level)
 print(f'{max_level=}')
-
-led = DigitalInOut(board.LED_INVERTED)
-led.direction = Direction.OUTPUT
-led.value = not disable_led
-print(f'{disable_led=}')
 
 levels = [min_level] * len(pwm)
 values = [None] * len(pwm)
